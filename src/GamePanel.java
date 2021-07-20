@@ -169,7 +169,12 @@ public class GamePanel extends JPanel implements ActionListener{
         btn.setVisible(true);
         btn.setSize(new Dimension(200,50));
         btn.setLocation((SCREEN_WIDTH-200)/2, SCREEN_HEIGHT*2/3);
-        btn.addActionListener(e -> new GameFrame());
+        btn.addActionListener(e -> {
+            JComponent comp = (JComponent) e.getSource();
+            Window win = SwingUtilities.getWindowAncestor(comp);
+            win.dispose();
+            new GameFrame();
+        });
         return btn;
     }
 
