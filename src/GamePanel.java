@@ -97,6 +97,17 @@ public class GamePanel extends JPanel implements ActionListener {
     public void newApple() {
         appleX = rd.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE;
         appleY = rd.nextInt(SCREEN_HEIGHT / UNIT_SIZE) * UNIT_SIZE;
+
+        //in case of the apple appear in snake's body
+        for (int i = bodyParts; i > 0; i--) {
+            while (appleX == x[i] && appleY == y[i]) {
+                appleX += UNIT_SIZE;
+                appleY += UNIT_SIZE;
+
+                if(appleX >= SCREEN_WIDTH) appleX = 0;
+                if(appleY >= SCREEN_HEIGHT) appleY = 0;
+            }
+        }
     }
 
     public void checkCollisions() {
