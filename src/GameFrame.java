@@ -2,8 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameFrame extends JFrame {
-    GameFrame() {
-        this.add(new GamePanel());
+    GameFrame(String difficulty, String mode, String color) {
+        this.add(new GamePanel(difficulty, mode, color));
         this.setTitle("Snake Game");
         this.setBackground(Color.DARK_GRAY);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

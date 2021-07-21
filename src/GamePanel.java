@@ -5,11 +5,12 @@ import java.util.Random;
 
 public class GamePanel extends JPanel implements ActionListener{
 
-    static final int SCREEN_WIDTH = 600;
-    static final int SCREEN_HEIGHT = 600;
-    static final int UNIT_SIZE = 25;
-    static final int GAME_UNIT = (SCREEN_WIDTH*SCREEN_HEIGHT)/UNIT_SIZE;
-    static final int DELAY = 75;
+    final int SCREEN_WIDTH = 600;
+    final int SCREEN_HEIGHT = 600;
+    final int UNIT_SIZE = 25;
+    final int GAME_UNIT = (SCREEN_WIDTH*SCREEN_HEIGHT)/UNIT_SIZE;
+
+    int DELAY = 75;
 
     final int[] x = new int[GAME_UNIT];
     final int[] y = new int[GAME_UNIT];
@@ -25,12 +26,25 @@ public class GamePanel extends JPanel implements ActionListener{
     Timer timer;
     Random rd;
 
-    GamePanel() {
+    String DIFFICULTY, MODE, COLOR_CHOOSE;
+
+    GamePanel(String difficulty, String mode, String color) {
         rd = new Random();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
+
+        switch (difficulty) {
+            case "Hard" -> DELAY = 50;
+            case "Normal" -> DELAY = 75;
+            case "Easy" -> DELAY = 100;
+        }
+
+        this.DIFFICULTY = difficulty;
+        this.MODE = mode;
+        this.COLOR_CHOOSE = color;
+
         startGame();
     }
 
@@ -65,7 +79,10 @@ public class GamePanel extends JPanel implements ActionListener{
                     g.fillRect(x[0],y[0],UNIT_SIZE,UNIT_SIZE);
                 }
                 else {
-                    g.setColor(new Color(45,180,0));
+                    if(COLOR_CHOOSE.equals("Default"))
+                        g.setColor(new Color(45,180,0));
+                    else if(COLOR_CHOOSE.equals("Mixed"))
+                        g.setColor(new Color(rd.nextInt(255),rd.nextInt(255),rd.nextInt(255)));
                     g.fillRect(x[i],y[i],UNIT_SIZE,UNIT_SIZE);
                 }
             }
@@ -130,8 +147,10 @@ public class GamePanel extends JPanel implements ActionListener{
         }
 
         //check if the snake running out of the game's frame
-//        if(x[0] < 0 || x[0] > SCREEN_WIDTH || y[0] < 0 || y[0] > SCREEN_HEIGHT)
-//            running = false;
+        if(MODE.equals("Border")) {
+            if(x[0] < 0 || x[0] > SCREEN_WIDTH || y[0] < 0 || y[0] > SCREEN_HEIGHT)
+                running = false;
+        }
 
         if(!running) timer.stop();
     }
@@ -173,7 +192,7 @@ public class GamePanel extends JPanel implements ActionListener{
             JComponent comp = (JComponent) e.getSource();
             Window win = SwingUtilities.getWindowAncestor(comp);
             win.dispose();
-            new GameFrame();
+            new GameFrame(DIFFICULTY, MODE, COLOR_CHOOSE);
         });
         return btn;
     }
@@ -182,10 +201,12 @@ public class GamePanel extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if(running) {
             move();
-            checkTouchBorder();
+
+            if(MODE.equals("Borderless"))
+                checkTouchBorder();
+
             checkApple();
             checkCollisions();
-            //checkTouchBorder();
         }
         repaint();
     }
