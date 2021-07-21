@@ -182,9 +182,10 @@ public class GamePanel extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if(running) {
             move();
+            checkTouchBorder();
             checkApple();
             checkCollisions();
-            checkTouchBorder();
+            //checkTouchBorder();
         }
         repaint();
     }
