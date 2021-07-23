@@ -178,6 +178,7 @@ public class GamePanel extends JPanel implements ActionListener{
 
         //check if the player want to play the new game or not
         this.add(createButtonPlayAgain());
+        this.add(createButtonBackToMenu());
     }
 
     public JButton createButtonPlayAgain() {
@@ -187,12 +188,30 @@ public class GamePanel extends JPanel implements ActionListener{
         btn.getFocusListeners();
         btn.setVisible(true);
         btn.setSize(new Dimension(200,50));
-        btn.setLocation((SCREEN_WIDTH-200)/2, SCREEN_HEIGHT*2/3);
+        btn.setLocation(50, SCREEN_HEIGHT*2/3);
         btn.addActionListener(e -> {
             JComponent comp = (JComponent) e.getSource();
             Window win = SwingUtilities.getWindowAncestor(comp);
             win.dispose();
             new GameFrame(DIFFICULTY, MODE, COLOR_CHOOSE);
+        });
+        return btn;
+    }
+
+    public JButton createButtonBackToMenu() {
+        JButton btn = new JButton("Back to Menu");
+        btn.setBackground(Color.red);
+        btn.setForeground(Color.white);
+        btn.setEnabled(true);
+        btn.getFocusListeners();
+        btn.setVisible(true);
+        btn.setSize(new Dimension(200,50));
+        btn.setLocation(350, SCREEN_HEIGHT*2/3);
+        btn.addActionListener(e -> {
+            JComponent comp = (JComponent) e.getSource();
+            Window win = SwingUtilities.getWindowAncestor(comp);
+            win.dispose();
+            new MenuScreen();
         });
         return btn;
     }
