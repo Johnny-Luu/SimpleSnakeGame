@@ -86,6 +86,15 @@ public class GamePanel extends JPanel implements ActionListener{
                     g.fillRect(x[i],y[i],UNIT_SIZE,UNIT_SIZE);
                 }
             }
+
+            //display wall in border mode
+            if(MODE.equals("Border")) {
+                g.setColor(Color.red);
+                g.drawLine(0,0,0,SCREEN_HEIGHT);                                                //left
+                g.drawLine(SCREEN_WIDTH - 1,0,SCREEN_WIDTH - 1,SCREEN_HEIGHT - 1);          //right
+                g.drawLine(0,1,SCREEN_WIDTH - 1,1);                                         //top
+                g.drawLine(0,SCREEN_HEIGHT - 1,SCREEN_WIDTH - 1,SCREEN_HEIGHT - 1);         //bottom
+            }
         }
         else {
             gameOver(g);
